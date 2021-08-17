@@ -100,10 +100,10 @@ public class TrackerService extends Service implements LocationListener {
 
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .setMinimumFetchIntervalInSeconds(CONFIG_CACHE_EXPIRY)
                 .build();
-                mFirebaseRemoteConfig.setConfigSettings(configSettings);
-        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+                mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
 
         mPrefs = getSharedPreferences(getString(R.string.prefs), MODE_PRIVATE);
         String email = mPrefs.getString(getString(R.string.email), "");
@@ -150,16 +150,12 @@ public class TrackerService extends Service implements LocationListener {
     }
 
     private void fetchRemoteConfig() {
-        long cacheExpiration = CONFIG_CACHE_EXPIRY;
-        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
-            cacheExpiration = 0;
-        }
-        mFirebaseRemoteConfig.fetch(cacheExpiration)
+        mFirebaseRemoteConfig.fetch(CONFIG_CACHE_EXPIRY)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i(TAG, "Remote config fetched");
-                        mFirebaseRemoteConfig.activateFetched();
+                        mFirebaseRemoteConfig.activate();
                     }
                 });
     }
