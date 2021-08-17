@@ -33,21 +33,21 @@ database.ref('raw-locations').on('value', function(data) {
   $('#loading').hide();
 
   var transports = data.val();
-  transports = Object.keys(transports).map(function(id) {
-    var transport = transports[id][0];
-    transport.id = id;
-    transport.power = Math.round(transport.power);
-    transport.time = moment(transport.time).fromNow();
-    transport.map = 'https://maps.googleapis.com/maps/api/staticmap?size=200x200'
-        + '&markers=color:blue%7Clabel:' + transport.id + '%7C' + transport.lat
-        + ',' + transport.lng + '&key=' + config.mapsApiKey + '&zoom=15';
-    return transport;
-  });
 
   var html;
   if (!transports) {
     html = '<p class="empty">No transport locations available.</p>';
   } else {
+    transports = Object.keys(transports).map(function(id) {
+      var transport = transports[id][0];
+      transport.id = id;
+      transport.power = Math.round(transport.power);
+      transport.time = moment(transport.time).fromNow();
+      transport.map = 'https://maps.googleapis.com/maps/api/staticmap?size=200x200'
+          + '&markers=color:blue%7Clabel:' + transport.id + '%7C' + transport.lat
+          + ',' + transport.lng + '&key=' + config.mapsApiKey + '&zoom=15';
+      return transport;
+    });
     html = ejs.render($('#transports-template').html(), {transports: transports});
   }
   $('#transports').html(html);
