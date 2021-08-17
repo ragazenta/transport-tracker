@@ -21,12 +21,12 @@ var config = {
   "firebaseDatabaseURL": "",
 };
 
-var app = firebase.initializeApp({
+firebase.initializeApp({
   apiKey: config.firebaseApiKey,
   databaseURL: config.firebaseDatabaseURL,
 });
 
-var database = app.database();
+var database = firebase.database();
 
 database.ref('raw-locations').on('value', function(data) {
 
