@@ -31,14 +31,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
-import android.text.method.PasswordTransformationMethod;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -210,6 +210,7 @@ public class TrackerActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
             grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST) {
             // We request storage perms as well as location perms, but don't care
             // about the storage perms - it's just for debugging.
@@ -308,7 +309,7 @@ public class TrackerActivity extends AppCompatActivity {
         // Changing action button text color
         View sbView = snackbar.getView();
         TextView textView = (TextView) sbView.findViewById(
-                android.support.design.R.id.snackbar_text);
+                com.google.android.material.R.id.snackbar_text);
         textView.setTextColor(Color.YELLOW);
         snackbar.show();
     }
@@ -339,7 +340,7 @@ public class TrackerActivity extends AppCompatActivity {
 
         // Changing action button text color
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
+        TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id
                 .snackbar_text);
         textView.setTextColor(Color.YELLOW);
         snackbar.show();

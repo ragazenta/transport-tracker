@@ -58,7 +58,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/cloud"/>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="300dp"
@@ -158,5 +158,5 @@
                 android:text="@string/start_tracking"/>
 
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
