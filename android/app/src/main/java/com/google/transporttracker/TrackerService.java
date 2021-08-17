@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -47,6 +48,7 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
@@ -72,6 +74,7 @@ public class TrackerService extends Service implements LocationListener {
     private static final int NOTIFICATION_ID = 1;
     private static final int FOREGROUND_SERVICE_ID = 1;
     private static final int CONFIG_CACHE_EXPIRY = 600;  // 10 minutes.
+    private static final String CHANNEL_ID = "transporttracker-channel";
 
     private GoogleApiClient mGoogleApiClient;
     private DatabaseReference mFirebaseTransportRef;
@@ -95,6 +98,7 @@ public class TrackerService extends Service implements LocationListener {
     public void onCreate() {
         super.onCreate();
 
+        createNotificationChannel();
         buildNotification();
         setStatusMessage(R.string.connecting);
 
@@ -337,11 +341,26 @@ public class TrackerService extends Service implements LocationListener {
         setStatusMessage(connected ? R.string.tracking : R.string.not_tracking);
     }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.app_name);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
     private void buildNotification() {
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, TrackerActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        mNotificationBuilder = new NotificationCompat.Builder(this)
+        mNotificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.bus_white)
                 .setColor(getColor(R.color.colorPrimary))
                 .setContentTitle(getString(R.string.app_name))
