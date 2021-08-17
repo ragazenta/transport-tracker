@@ -1,4 +1,4 @@
-**_NOTE:_**  This demo application is no longer functional as it has multiple dependencies that must be updated.
+**_NOTE:_**  This demo application is still functional even if it has multiple deprecated dependencies.
 
 Google Transport Tracker
 ========================
@@ -14,7 +14,7 @@ https://developers.google.com/maps/pricing-and-plans/). For more information, se
 ## Overview
 
 This is the open source release for the 
-[I/O Bus Tracker](https://io-bus-tracker.appspot.com/).
+[I/O Bus Tracker](https://www.youtube.com/watch?v=dGYu9GtEszE).
 
 The repository consists of a number of components, representing the individual
 moving parts of the bus tracking system. It includes an Android app,
